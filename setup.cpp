@@ -2,24 +2,24 @@
 #include <string>
 using namespace std;
 
-const int SIZE = 7; 
+const int SIZE = 6;
 
 void setupMenu(string items[], double prices[], int quantities[]) {
-    items[1] = "Burger";
-    items[2] = "Pizza";
-    items[3] = "Pasta";
-    items[4] = "Sandwich";
-    items[5] = "Fries";
-    items[6] = "Drink";
+    items[0] = "Burger";
+    items[1] = "Pizza";
+    items[2] = "Pasta";
+    items[3] = "Sandwich";
+    items[4] = "Fries";
+    items[5] = "Drink";
 
-    prices[1] = 195;
-    prices[2] = 120;
-    prices[3] = 75;
-    prices[4] = 85;
-    prices[5] = 45;
-    prices[6] = 25;
+    prices[0] = 195;
+    prices[1] = 120;
+    prices[2] = 75;
+    prices[3] = 85;
+    prices[4] = 45;
+    prices[5] = 25;
 
-    for (int i = 1; i < SIZE; i++) {
+    for (int i = 0; i < SIZE; i++) {
         quantities[i] = 0;
     }
 }
