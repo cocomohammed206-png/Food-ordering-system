@@ -4,13 +4,17 @@ using namespace std;
 
 const int SIZE = 6;
 
-void setupMenu(string items[], double prices[], int quantities[]) {
-    items[0] = "Burger";
-    items[1] = "Pizza";
-    items[2] = "Pasta";
-    items[3] = "Sandwich";
-    items[4] = "Fries";
-    items[5] = "Drink";
+int main() {
+    string menuItems[SIZE];
+    double prices[SIZE];
+    int quantities[SIZE];
+
+    menuItems[0] = "Burger";
+    menuItems[1] = "Pizza";
+    menuItems[2] = "Pasta";
+    menuItems[3] = "Sandwich";
+    menuItems[4] = "Fries";
+    menuItems[5] = "Drink";
 
     prices[0] = 195;
     prices[1] = 120;
@@ -22,14 +26,6 @@ void setupMenu(string items[], double prices[], int quantities[]) {
     for (int i = 0; i < SIZE; i++) {
         quantities[i] = 0;
     }
-}
-
-int main() {
-    string menuItems[SIZE];
-    double prices[SIZE];
-    int quantities[SIZE];
-
-    setupMenu(menuItems, prices, quantities);
 
     return 0;
 }
