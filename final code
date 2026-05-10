@@ -8,7 +8,6 @@ const int SIZE = 6;
 void DisplayMenu(string items[],double prices[],int size);
 double displayReceipt(string menuItems[], int quantities[], double prices[], int SIZE);
 
-
 int main()
 {
 
@@ -16,7 +15,6 @@ int main()
     string menuItems[SIZE] = {"Burger", "Pizza", "Pasta", "Sandwich", "Fries", "Drink"};
     double prices[SIZE] = {195, 120, 75, 85, 45, 25};
     int quantities[SIZE] = {};
-    
     
 //nour
 int pick ;
@@ -59,12 +57,6 @@ while (true)
 
     cout << "Thank you-can't wait to see you again!! " << endl;
 
-
-
-
-
-
-
 return 0;
 }
 
@@ -106,4 +98,3 @@ double subtotal;
 
     return totalBill;
 }
-
