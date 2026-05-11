@@ -1,18 +1,54 @@
+//Nour
+cout << "Welcome to our restaurant!!"<<endl<<"Crafted with love, served with flavor."<<endl<<endl;
+
 int pick ;
-cout << "Crafted with love, served with flavor."<<endl ;
 while (true)
 {
-     DisplayMenu(menuItems,prices,SIZE);
+     DisplayMenu(mealItems, drinkItems, dessertItems,
+                mealPrices, drinkPrices, dessertPrices,
+                MEALS_SIZE, DRINKS_SIZE, DESSERTS_SIZE );
+
      cout<<"Take your pick happiness is waiting"<<endl;
+     cout<<"Please enter the item number (1-10) to add it to your order: ";
      cin>>pick ;
-       if (pick == SIZE + 1)
+       if (pick == 11)
          {
            break;
          }
-        if (pick >= 1 && pick <= SIZE)
+       else if (pick >= 1 && pick <= 3)
         {
               int qty;
-              cout << "How many " << menuItems[pick - 1] << "? ";
+              cout << "How many " << mealItems[pick - 1] << "? ";
+              cin >> qty;
+              while (qty <= 0)
+                {
+                  cout << "Invalid quantity! Please enter a number greater than 0: ";
+                   cin >> qty;
+                }
+                  if (qty > 0)
+                    {
+                      quantities[pick - 1] += qty;
+                    }
+        }
+        else if (pick >= 4 && pick <= 7)
+        {
+              int qty;
+              cout << "How many " << drinkItems[pick - 5] << "? ";
+              cin >> qty;
+              while (qty <= 0)
+                {
+                  cout << "Invalid quantity! Please enter a number greater than 0: ";
+                   cin >> qty;
+                }
+                  if (qty > 0)
+                    {
+                      quantities[pick - 1] += qty;
+                    }
+        }
+        else if (pick >= 8 && pick <= 10)
+        {
+              int qty;
+              cout << "How many " << dessertItems[pick - 8] << "? ";
               cin >> qty;
               while (qty <= 0)
                 {
@@ -26,8 +62,8 @@ while (true)
         }
          else 
             {
-            cout << "Wrong choice ,pleas choose from menu!" << endl;
+            cout << "Wrong choice ,please choose from menu!" << endl;
             }
-        cout <<"do you want another thing ?"<<endl;
+            cout <<"do you want another thing ?"<<endl;
 
 }
