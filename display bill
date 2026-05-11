@@ -1,0 +1,11 @@
+#include <cstdlib>
+if (pick == SIZE + 1)
+    {system("cls");}
+  cout<< "Your order is ready - here are the details "<<endl;
+  cout << "------------------------------------" << endl;
+ double finalResult = displayReceipt(menuItems, quantities, prices, SIZE,orderType );
+
+    cout << "Thank you-can't wait to see you again!! " << endl;
+
+return 0;
+}
