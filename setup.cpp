@@ -24,7 +24,7 @@ int main()
     string mealItems[MEALS_SIZE]        = {"Burger", "Pizza", "Pasta", "Sandwich"};
     double mealPrices[MEALS_SIZE]       = {195, 120, 75, 85};
 
-    string drinkItems[DRINKS_SIZE]      = {"Fries", "Drink", "Juice"};
+    string drinkItems[DRINKS_SIZE]      = {"Soda", "Water", "Juice"};
     double drinkPrices[DRINKS_SIZE]     = {45, 25, 35};
 
     string dessertItems[DESSERTS_SIZE]  = {"Cheesecake", "Ice Cream", "Brownie"};
