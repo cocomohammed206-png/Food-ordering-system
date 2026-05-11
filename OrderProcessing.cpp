@@ -15,7 +15,7 @@ while (true)
          {
            break;
          }
-       else if (pick >= 1 && pick <= 3)
+       else if (pick >= 1 && pick <= 4)
         {
               int qty;
               cout << "How many " << mealItems[pick - 1] << "? ";
@@ -30,7 +30,7 @@ while (true)
                       quantities[pick - 1] += qty;
                     }
         }
-        else if (pick >= 4 && pick <= 7)
+        else if (pick >= 5 && pick <= 7)
         {
               int qty;
               cout << "How many " << drinkItems[pick - 5] << "? ";
