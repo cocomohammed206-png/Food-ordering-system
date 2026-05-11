@@ -67,3 +67,9 @@ while (true)
             cout <<"do you want another thing ?"<<endl;
 
 }
+int orderType;
+cout << "\nHow would you like to receive your order?" << endl;
+cout << "1. Pick up from restaurant" << endl;
+cout << "2. Home Delivery" << endl;
+cout << "Enter choice: ";
+cin >> orderType;
