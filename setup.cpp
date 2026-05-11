@@ -12,7 +12,10 @@ const int SIZE = MEALS_SIZE + DRINKS_SIZE + DESSERTS_SIZE;
 const double DISCOUNT_10_MIN = 300.0;
 const double DISCOUNT_20_MIN = 600.0;
 
-void DisplayMenu(string items[], double prices[], int size);
+void DisplayMenu
+     (string arr1[], string arr2[], string arr3[],
+     double prices1[], double prices2[], double prices3[],
+     int size1, int size2, int size3);
 double displayReceipt(string menuItems[], int quantities[], double prices[], int SIZE);
 
 int main()
@@ -35,7 +38,3 @@ int main()
     for (int i = 0; i < MEALS_SIZE;    i++) { menuItems[idx] = mealItems[i];    prices[idx++] = mealPrices[i]; }
     for (int i = 0; i < DRINKS_SIZE;   i++) { menuItems[idx] = drinkItems[i];   prices[idx++] = drinkPrices[i]; }
     for (int i = 0; i < DESSERTS_SIZE; i++) { menuItems[idx] = dessertItems[i]; prices[idx++] = dessertPrices[i]; }
-
-cout << "\n-- " << categories[0] << " --" << endl;
-cout << "\n-- " << categories[1] << " --" << endl;
-cout << "\n-- " << categories[2] << " --" << endl;
