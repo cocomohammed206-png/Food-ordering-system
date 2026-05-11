@@ -35,3 +35,9 @@ int main()
     for (int i = 0; i < MEALS_SIZE;    i++) { menuItems[idx] = mealItems[i];    prices[idx++] = mealPrices[i]; }
     for (int i = 0; i < DRINKS_SIZE;   i++) { menuItems[idx] = drinkItems[i];   prices[idx++] = drinkPrices[i]; }
     for (int i = 0; i < DESSERTS_SIZE; i++) { menuItems[idx] = dessertItems[i]; prices[idx++] = dessertPrices[i]; }
+
+string categories[3] = {"Meals", "Drinks", "Desserts"};
+
+cout << "\n-- " << categories[0] << " --" << endl;
+cout << "\n-- " << categories[1] << " --" << endl;
+cout << "\n-- " << categories[2] << " --" << endl;
