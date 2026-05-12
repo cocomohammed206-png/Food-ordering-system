@@ -1,0 +1,336 @@
+// ============================================================
+//  restaurant_gui.cpp  –  Qt GUI Implementation
+//  Team contributions marked with each member's name
+// ============================================================
+
+#include "restaurant_gui.h"
+#include <QApplication>
+
+// ============================================================
+//  MALAK – Constructor: initialise data arrays & build UI
+// ============================================================
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+{
+    // ── Initialise data (same values as original code) ───────
+    // Meals (indices 0-3)
+    itemNames[0]  = "Burger";     itemPrices[0]  = 195;
+    itemNames[1]  = "Pizza";      itemPrices[1]  = 120;
+    itemNames[2]  = "Pasta";      itemPrices[2]  =  75;
+    itemNames[3]  = "Sandwich";   itemPrices[3]  =  85;
+    // Drinks (indices 4-6)
+    itemNames[4]  = "Soda";       itemPrices[4]  =  45;
+    itemNames[5]  = "Water";      itemPrices[5]  =  25;
+    itemNames[6]  = "Juice";      itemPrices[6]  =  35;
+    // Desserts (indices 7-9)
+    itemNames[7]  = "Cheesecake"; itemPrices[7]  =  85;
+    itemNames[8]  = "Ice Cream";  itemPrices[8]  =  50;
+    itemNames[9]  = "Brownie";    itemPrices[9]  =  65;
+
+    for (int i = 0; i < TOTAL_ITEMS; i++) quantities[i] = 0;
+
+    // ── Window setup ─────────────────────────────────────────
+    setWindowTitle("Restaurant Ordering System");
+    resize(820, 600);
+
+    // ── Root widget & main horizontal layout ─────────────────
+    QWidget     *root   = new QWidget(this);
+    QHBoxLayout *hMain  = new QHBoxLayout(root);
+    hMain->setSpacing(12);
+    hMain->setContentsMargins(12, 12, 12, 12);
+    setCentralWidget(root);
+
+    // ── Left column: scrollable menu ─────────────────────────
+    QScrollArea *scroll = new QScrollArea();
+    scroll->setWidgetResizable(true);
+    scroll->setMinimumWidth(430);
+
+    QWidget     *menuWidget = new QWidget();
+    QVBoxLayout *menuLayout = new QVBoxLayout(menuWidget);
+    menuLayout->setSpacing(6);
+
+    buildMenuPanel(menuWidget, menuLayout);
+    scroll->setWidget(menuWidget);
+
+    // ── Right column: order summary ───────────────────────────
+    QWidget     *rightWidget = new QWidget();
+    QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
+    rightLayout->setSpacing(8);
+    rightWidget->setMinimumWidth(300);
+
+    buildSummaryPanel(rightWidget, rightLayout);
+
+    hMain->addWidget(scroll, 55);
+    hMain->addWidget(rightWidget, 45);
+
+    // ── Global stylesheet ─────────────────────────────────────
+    setStyleSheet(
+        "QMainWindow, QWidget { background-color: #1a1a2e; color: #eaeaea; font-family: Segoe UI; }"
+        "QLabel#sectionHeader { background-color: #e94560; color: white; padding: 6px 10px;"
+        "   font-size: 13px; font-weight: bold; border-radius: 4px; }"
+        "QFrame#itemRow { background-color: #16213e; border-radius: 6px; padding: 4px; }"
+        "QFrame#itemRow:hover { background-color: #0f3460; }"
+        "QPushButton#addBtn { background-color: #e94560; color: white; border: none;"
+        "   border-radius: 4px; padding: 4px 10px; font-weight: bold; }"
+        "QPushButton#addBtn:hover { background-color: #c73652; }"
+        "QPushButton#placeBtn { background-color: #27ae60; color: white; border: none;"
+        "   border-radius: 6px; padding: 10px; font-size: 14px; font-weight: bold; }"
+        "QPushButton#placeBtn:hover { background-color: #1e8449; }"
+        "QTextEdit { background-color: #16213e; border: 1px solid #0f3460;"
+        "   border-radius: 4px; font-family: Courier New; font-size: 12px; color: #eaeaea; }"
+        "QGroupBox { border: 1px solid #0f3460; border-radius: 6px; margin-top: 6px; color: #eaeaea; }"
+        "QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; }"
+        "QRadioButton { color: #eaeaea; spacing: 6px; }"
+        "QSpinBox { background-color: #0f3460; color: white; border: none; border-radius: 3px;"
+        "   padding: 2px 4px; width: 44px; }"
+        "QScrollArea { border: none; }"
+        "QLabel#totalLabel { font-size: 15px; font-weight: bold; color: #f0c040; }"
+        "QLabel#welcomeLabel { font-size: 16px; font-weight: bold; color: #e94560;"
+        "   padding: 8px 0; }"
+    );
+}
+
+// ============================================================
+//  MOAZ – buildMenuPanel: draws the categorised menu
+// ============================================================
+void MainWindow::buildMenuPanel(QWidget* /*parent*/, QVBoxLayout *layout)
+{
+    QLabel *welcome = new QLabel("🍽  Welcome to Our Restaurant!");
+    welcome->setObjectName("welcomeLabel");
+    welcome->setAlignment(Qt::AlignCenter);
+    layout->addWidget(welcome);
+
+    // ── Meals section ────────────────────────────────────────
+    layout->addWidget(createSectionHeader("🥩  MEALS"));
+    for (int i = 0; i < MEALS_SIZE; i++)
+        layout->addWidget(createItemRow(itemNames[i], itemPrices[i], i));
+
+    // ── Drinks section ────────────────────────────────────────
+    layout->addWidget(createSectionHeader("🥤  DRINKS"));
+    for (int i = MEALS_SIZE; i < MEALS_SIZE + DRINKS_SIZE; i++)
+        layout->addWidget(createItemRow(itemNames[i], itemPrices[i], i));
+
+    // ── Desserts section ──────────────────────────────────────
+    layout->addWidget(createSectionHeader("🍰  DESSERTS"));
+    for (int i = MEALS_SIZE + DRINKS_SIZE; i < TOTAL_ITEMS; i++)
+        layout->addWidget(createItemRow(itemNames[i], itemPrices[i], i));
+
+    layout->addStretch();
+}
+
+QLabel *MainWindow::createSectionHeader(const QString &title)
+{
+    QLabel *lbl = new QLabel(title);
+    lbl->setObjectName("sectionHeader");
+    return lbl;
+}
+
+// Each item row: name | price | spinbox | Add button
+QFrame *MainWindow::createItemRow(const QString &name, double price, int index)
+{
+    QFrame      *row    = new QFrame();
+    row->setObjectName("itemRow");
+    QHBoxLayout *hl     = new QHBoxLayout(row);
+    hl->setContentsMargins(8, 4, 8, 4);
+
+    QLabel *lblName  = new QLabel(name);
+    lblName->setMinimumWidth(100);
+
+    QLabel *lblPrice = new QLabel(QString::number(price, 'f', 0) + " EGP");
+    lblPrice->setStyleSheet("color: #f0c040;");
+    lblPrice->setMinimumWidth(80);
+
+    QSpinBox *spin = new QSpinBox();
+    spin->setRange(1, 99);
+    spin->setValue(1);
+
+    QPushButton *btn = new QPushButton("Add");
+    btn->setObjectName("addBtn");
+    btn->setFixedWidth(54);
+
+    // Capture spin & index for the lambda
+    connect(btn, &QPushButton::clicked, this, [this, spin, index]() {
+        quantities[index] += spin->value();
+        spin->setValue(1);
+        updateOrderSummary();
+    });
+
+    hl->addWidget(lblName, 3);
+    hl->addWidget(lblPrice, 2);
+    hl->addWidget(spin, 1);
+    hl->addWidget(btn, 1);
+    return row;
+}
+
+// ============================================================
+//  NOUR – buildSummaryPanel: right-side order summary
+// ============================================================
+void MainWindow::buildSummaryPanel(QWidget* /*parent*/, QVBoxLayout *layout)
+{
+    QLabel *hdr = new QLabel("📋  Your Order");
+    hdr->setObjectName("welcomeLabel");
+    hdr->setAlignment(Qt::AlignCenter);
+    layout->addWidget(hdr);
+
+    summaryBox = new QTextEdit();
+    summaryBox->setReadOnly(true);
+    summaryBox->setMinimumHeight(220);
+    layout->addWidget(summaryBox, 1);
+
+    totalLabel = new QLabel("Total: 0.00 EGP");
+    totalLabel->setObjectName("totalLabel");
+    totalLabel->setAlignment(Qt::AlignRight);
+    layout->addWidget(totalLabel);
+
+    // ── MARIAM – Delivery group ───────────────────────────────
+    QGroupBox   *grpDelivery = new QGroupBox("Delivery Option");
+    QVBoxLayout *gv          = new QVBoxLayout(grpDelivery);
+
+    rbPickup   = new QRadioButton("🏪  Pick up from restaurant");
+    rbDelivery = new QRadioButton("🚴  Home Delivery  (+50 EGP / free above 500 EGP)");
+    rbPickup->setChecked(true);
+
+    connect(rbPickup,   &QRadioButton::toggled, this, &MainWindow::updateOrderSummary);
+    connect(rbDelivery, &QRadioButton::toggled, this, &MainWindow::updateOrderSummary);
+
+    gv->addWidget(rbPickup);
+    gv->addWidget(rbDelivery);
+    layout->addWidget(grpDelivery);
+
+    // ── Place Order button ────────────────────────────────────
+    QPushButton *placeBtn = new QPushButton("✅  Place Order");
+    placeBtn->setObjectName("placeBtn");
+    connect(placeBtn, &QPushButton::clicked, this, &MainWindow::onPlaceOrder);
+    layout->addWidget(placeBtn);
+
+    updateOrderSummary();
+}
+
+// ============================================================
+//  NOUR – updateOrderSummary: refreshes live summary
+// ============================================================
+void MainWindow::updateOrderSummary()
+{
+    QString text;
+    double  sub = 0;
+
+    for (int i = 0; i < TOTAL_ITEMS; i++) {
+        if (quantities[i] > 0) {
+            double line = quantities[i] * itemPrices[i];
+            sub += line;
+            text += QString("%1 x%2 = %3 EGP\n")
+                        .arg(itemNames[i], -12)
+                        .arg(quantities[i])
+                        .arg(line, 0, 'f', 2);
+        }
+    }
+
+    if (text.isEmpty()) text = "(no items yet)";
+    summaryBox->setText(text);
+
+    int    orderType   = rbDelivery && rbDelivery->isChecked() ? 2 : 1;
+    double delivery    = calcDeliveryFee(sub, orderType);
+    double tax         = sub * 0.14;
+    double finalTotal  = sub + tax + delivery;
+
+    totalLabel->setText(QString("Total: %1 EGP").arg(finalTotal, 0, 'f', 2));
+}
+
+// ============================================================
+//  MARIAM – onPlaceOrder: validates & shows receipt
+// ============================================================
+void MainWindow::onPlaceOrder()
+{
+    // Check something is ordered
+    bool hasItems = false;
+    for (int i = 0; i < TOTAL_ITEMS; i++)
+        if (quantities[i] > 0) { hasItems = true; break; }
+
+    if (!hasItems) {
+        QMessageBox::warning(this, "Empty Order",
+            "Please add at least one item before placing your order.");
+        return;
+    }
+
+    int orderType = rbDelivery->isChecked() ? 2 : 1;
+    QString receipt = buildReceipt(orderType);
+
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("Order Receipt");
+    msgBox.setText(receipt);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setStyleSheet(
+        "QMessageBox { background-color: #1a1a2e; color: #eaeaea; }"
+        "QLabel { color: #eaeaea; font-family: Courier New; font-size: 12px; }"
+        "QPushButton { background-color: #e94560; color: white; border-radius: 4px; padding: 6px 20px; }"
+    );
+    msgBox.exec();
+
+    // Reset order after placing
+    for (int i = 0; i < TOTAL_ITEMS; i++) quantities[i] = 0;
+    updateOrderSummary();
+}
+
+// ============================================================
+//  HAMZA – buildReceipt: assembles the full receipt string
+// ============================================================
+QString MainWindow::buildReceipt(int orderType)
+{
+    QString receipt;
+    receipt += "==============================\n";
+    receipt += "      RESTAURANT RECEIPT      \n";
+    receipt += "==============================\n";
+
+    double subtotal = 0;
+
+    for (int i = 0; i < TOTAL_ITEMS; i++) {
+        if (quantities[i] > 0) {
+            double line = quantities[i] * itemPrices[i];
+            subtotal   += line;
+            receipt    += QString("%1 x%2 = %3 EGP\n")
+                              .arg(itemNames[i], -12)
+                              .arg(quantities[i])
+                              .arg(line, 0, 'f', 2);
+        }
+    }
+
+    double tax      = subtotal * 0.14;
+    double delivery = calcDeliveryFee(subtotal, orderType);   // MOHAMED
+    double total    = subtotal + tax + delivery;
+
+    receipt += "------------------------------\n";
+    receipt += QString("Subtotal  : %1 EGP\n").arg(subtotal, 0, 'f', 2);
+    receipt += QString("Tax (14%) : %1 EGP\n").arg(tax,      0, 'f', 2);
+
+    if (orderType == 2) {
+        receipt += (delivery == 0)
+            ? "Delivery  : FREE\n"
+            : QString("Delivery  : %1 EGP\n").arg(delivery, 0, 'f', 2);
+    }
+
+    receipt += "==============================\n";
+    receipt += QString("TOTAL     : %1 EGP\n").arg(total, 0, 'f', 2);
+    receipt += "==============================\n";
+    receipt += "  Thank you! See you again :)";
+    return receipt;
+}
+
+// ============================================================
+//  MOHAMED – calcDeliveryFee: delivery cost logic
+// ============================================================
+double MainWindow::calcDeliveryFee(double subtotal, int orderType)
+{
+    if (orderType != 2) return 0.0;       // pickup → no fee
+    return (subtotal > 500.0) ? 0.0 : 50.0;
+}
+
+// ============================================================
+//  main entry point
+// ============================================================
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+    MainWindow   window;
+    window.show();
+    return app.exec();
+}
