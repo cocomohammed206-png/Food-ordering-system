@@ -11,9 +11,6 @@ const int DESSERTS_SIZE = 3;
 const int CAT_SIZE = 3;
 const int SIZE = MEALS_SIZE + DRINKS_SIZE + DESSERTS_SIZE;
 
-const double DISCOUNT_10_MIN = 300.0;
-const double DISCOUNT_20_MIN = 600.0;
-
 void DisplayMenu
      (string arr1[], string arr2[], string arr3[],
      double prices1[], double prices2[], double prices3[],
